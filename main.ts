@@ -38,9 +38,9 @@ function controls () {
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSprite) {
     changeScore(-1)
 })
-let Malkovitch: Sprite = null
 let textSprite: TextSprite = null
 let scor = 0
+let Malkovitch: Sprite = null
 tiles.setCurrentTilemap(tilemap`level2`)
 let textSprite3 = textsprite.create("Collect")
 textSprite3.setPosition(70, 80)
@@ -55,6 +55,11 @@ let textSprite2 = textsprite.create("avoid")
 textSprite2.setPosition(70, 80)
 pause(2000)
 tiles.setCurrentTilemap(tilemap`level7`)
+pause(2000)
+textSprite2.setText(" ")
+tiles.setCurrentTilemap(tilemap`level8`)
+scene.setBackgroundImage(assets.image`Malkovich`)
+scene.cameraFollowSprite(Malkovitch)
 scor = 0
 textSprite = textsprite.create(convertToText(scor))
 textSprite.setPosition(145, 4)
@@ -216,22 +221,24 @@ let Malkovitch2 = sprites.create(img`
 forever(function () {
     if (controller.A.isPressed()) {
         Malkovitch2 = sprites.create(img`
-            . . . 2 2 2 2 2 2 2 2 2 . . . . 
-            . . . 2 2 2 2 2 2 2 2 2 . . . . 
-            . . 2 2 2 2 2 2 2 2 2 2 2 . . . 
-            . . 2 2 2 2 2 2 2 2 2 2 2 . . . 
-            2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 
-            . . f c c c c c c c c d d f . . 
-            . . f d 8 d d d 8 d d d d f . . 
-            . . f d d d d d d d d d d f . . 
-            . . f d f f f f f 1 1 1 1 f . . 
-            . . f 1 f 1 1 1 f 1 1 1 f f . . 
-            . . f 1 1 1 1 1 1 1 1 1 f . . . 
-            . . f 1 1 1 1 1 1 1 1 1 f . . . 
-            . . f f f f f f f f f f f . . . 
-            . . . f d d d d d d d f . . . . 
-            . . . f d d d d d d d f . . . . 
-            . . . f d d d d d d d f . . . . 
+            ...2222222222.....
+            ...2222222222.....
+            ..2222222222222...
+            ..2222222222222...
+            22222222222222222.
+            ..fccccccccdddf...
+            ..fd8ddd8dddddf...
+            ..fdddddddddddf...
+            ..fdfffff11111f...
+            ..f1f111f1111ff...
+            ..f1111111111f....
+            ..f1111111111f....
+            ..ffffffffffff....
+            ...fddddddddf.....
+            ...fddddddddf.....
+            ...fddddddddf.....
+            ...fddddddddf.....
+            ...fddddddddf.....
             `, SpriteKind.notreallythere)
         Malkovitch2.setPosition(Malkovitch.x, Malkovitch.y)
         Malkovitch2.setVelocity(Malkovitch.vx, Malkovitch.vy)
@@ -254,6 +261,9 @@ forever(function () {
     } else {
         controls()
     }
+})
+forever(function () {
+    scene.cameraFollowSprite(Malkovitch)
 })
 forever(function () {
     if (Malkovitch.overlapsWith(coin)) {
@@ -346,7 +356,7 @@ forever(function () {
     }
     if (Malkovitch.overlapsWith(scary_monster)) {
         Malkovitch.setVelocity(randint(-100, 100), randint(-100, 100))
-        Malkovitch.destroy(effects.ashes, 8000)
+        Malkovitch.destroy(effects.ashes, 3000)
         Malkovitch.sayText("@#$%!")
         Malkovitch.setBounceOnWall(false)
         pause(1000)
