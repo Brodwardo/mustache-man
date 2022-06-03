@@ -1507,7 +1507,7 @@ forever(function () {
     if (controller.player2.isPressed(ControllerButton.Up)) {
         P2Weapon.setVelocity(0, -58)
         P2Weapon.setBounceOnWall(false)
-        pause(4500)
+        pause(3500)
         P2Weapon.setPosition(80, 120)
         P2Weapon.setVelocity(-30, 0)
         P2Weapon.setBounceOnWall(true)
@@ -1536,7 +1536,7 @@ forever(function () {
     if (Timer == 0) {
         scary_monster.sayText("Time's up, mustache!")
         pause(500)
-        game.over(false, effects.dissolve)
+        game.over(false, effects.melt)
     }
 })
 forever(function () {
@@ -1553,9 +1553,6 @@ forever(function () {
         Malkovitch.setBounceOnWall(false)
         pause(1000)
         game.over(false, effects.slash)
-        if (controller.A.isPressed()) {
-            pause(100)
-        }
     }
 })
 forever(function () {
