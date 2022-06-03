@@ -979,8 +979,35 @@ function OverlapCoins (playah: Sprite) {
         game.over(true, effects.dissolve)
     }
 }
+function Music () {
+    music.playMelody("C - C - D D E C ", 500)
+    music.playMelody("C F D C E D F G ", 500)
+    music.playMelody("A - F A - E G F ", 500)
+    music.playMelody("C C G E - D G G ", 500)
+    music.playMelody("C5 - C5 G A F D G ", 500)
+    music.playMelody("- - F F A F D F ", 500)
+    music.playMelody("C5 A F D C D F D ", 500)
+    music.playMelody("F G F C B F G E ", 500)
+    music.playMelody("D B - C C5 F - F ", 500)
+    music.playMelody("A B F G E F - C5 ", 500)
+    music.playMelody("C5 - B C D C D C ", 500)
+    music.playMelody("D C D E D G B C ", 500)
+    music.playMelody("D C F D A C5 B G ", 500)
+    music.playMelody("C E D A E F D D ", 500)
+    music.playMelody("- F F E F F E A ", 500)
+    music.playMelody("C5 D B C D - D F ", 500)
+    music.playMelody("G F D A G B C5 F ", 500)
+    music.playMelody("G - G - F A C5 E ", 500)
+    music.playMelody("C C5 C C5 C C5 F - ", 500)
+    music.playMelody("- F A - A F - E ", 500)
+    music.playMelody("C E C - C - G F ", 500)
+    music.playMelody("G - G - G F C5 F ", 500)
+    music.playMelody("E - F D C F G C ", 500)
+    music.playMelody("E G D E - E D G ", 500)
+}
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Projectile, function (sprite, otherSprite) {
     sprite.setPosition(randint(0, 160), randint(0, 120))
+    otherSprite.destroy()
     scene.cameraShake(4, 1000)
 })
 function changeScore (numbah: number) {
@@ -1297,7 +1324,7 @@ function gameStart () {
         `, SpriteKind.notreallythere)
     textSprite6 = textsprite.create(" ")
     ofProjectiles = 0
-    Timer = 100
+    Timer = 70
     timerSprite = textsprite.create(convertToText(Timer))
     timerSprite.setPosition(10, 5)
     P2Weapon = sprites.create(img`
@@ -1357,7 +1384,6 @@ function controls () {
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSprite) {
     changeScore(-1)
 })
-let textSprite9: TextSprite = null
 let P2Weapon: Sprite = null
 let timerSprite: TextSprite = null
 let Timer = 0
@@ -1384,11 +1410,6 @@ let textSprite2: TextSprite = null
 let textSprite3: TextSprite = null
 gameInstructions()
 gameStart()
-forever(function () {
-    pause(1000)
-    Timer += -1
-    timerSprite.setText(convertToText(Timer))
-})
 forever(function () {
     if (controller.A.isPressed()) {
         Malkovitch2 = sprites.create(img`
@@ -1479,76 +1500,8 @@ forever(function () {
     scary_monster.vy = ofProjectiles + 30
 })
 forever(function () {
-    if (Timer == 0) {
-        textSprite9 = textsprite.create("Time's up, sucka!")
-        pause(500)
-        game.over(false, effects.dissolve)
-    }
-})
-forever(function () {
-    if (Malkovitch.overlapsWith(yikes)) {
-        Malkovitch.setVelocity(100, 100)
-    }
-    if (Malkovitch.overlapsWith(projectyle)) {
-        Malkovitch.setVelocity(randint(-100, 100), -27)
-    }
-})
-forever(function () {
-    if (Malkovitch.vx > 31 || Malkovitch.vx < -31) {
-        pause(1000)
-        Malkovitch.setVelocity(27, 10)
-    } else if (Malkovitch.overlapsWith(COIN3)) {
-        for (let index = 0; index < 10; index++) {
-            Malkovitch.setVelocity(0, -15)
-        }
-    }
-    if (Malkovitch.overlapsWith(scary_monster)) {
-        Malkovitch.setVelocity(randint(-100, 100), randint(-100, 100))
-        Malkovitch.destroy(effects.ashes, 3000)
-        Malkovitch.sayText("@#$%!")
-        Malkovitch.setBounceOnWall(false)
-        pause(1000)
-        game.over(false, effects.slash)
-        game.reset()
-    } else {
-        controls()
-    }
-    if (Malkovitch.overlapsWith(P2Weapon)) {
-        Malkovitch.setVelocity(0, 0)
-        pause(1200)
-    } else {
-        controls()
-    }
-})
-forever(function () {
     OverlapCoins(Malkovitch)
     OverlapCoins(Malkovitch2)
-})
-forever(function () {
-    music.playMelody("C - C - D D E C ", 500)
-    music.playMelody("C F D C E D F G ", 500)
-    music.playMelody("A - F A - E G F ", 500)
-    music.playMelody("C C G E - D G G ", 500)
-    music.playMelody("C5 - C5 G A F D G ", 500)
-    music.playMelody("- - F F A F D F ", 500)
-    music.playMelody("C5 A F D C D F D ", 500)
-    music.playMelody("F G F C B F G E ", 500)
-    music.playMelody("D B - C C5 F - F ", 500)
-    music.playMelody("A B F G E F - C5 ", 500)
-    music.playMelody("C5 - B C D C D C ", 500)
-    music.playMelody("D C D E D G B C ", 500)
-    music.playMelody("D C F D A C5 B G ", 500)
-    music.playMelody("C E D A E F D D ", 500)
-    music.playMelody("- F F E F F E A ", 500)
-    music.playMelody("C5 D B C D - D F ", 500)
-    music.playMelody("G F D A G B C5 F ", 500)
-    music.playMelody("G - G - F A C5 E ", 500)
-    music.playMelody("C C5 C C5 C C5 F - ", 500)
-    music.playMelody("- F A - A F - E ", 500)
-    music.playMelody("C E C - C - G F ", 500)
-    music.playMelody("G - G - G F C5 F ", 500)
-    music.playMelody("E - F D C F G C ", 500)
-    music.playMelody("E G D E - E D G ", 500)
 })
 forever(function () {
     if (controller.player2.isPressed(ControllerButton.Up)) {
@@ -1559,4 +1512,67 @@ forever(function () {
         P2Weapon.setVelocity(-30, 0)
         P2Weapon.setBounceOnWall(true)
     }
+})
+forever(function () {
+    pause(1000)
+    Timer += -1
+    timerSprite.setText(convertToText(Timer))
+})
+forever(function () {
+    if (Malkovitch.vx > 31 || Malkovitch.vx < -31) {
+        pause(1000)
+        Malkovitch.setVelocity(27, 10)
+    } else if (Malkovitch.overlapsWith(COIN3)) {
+        for (let index = 0; index < 10; index++) {
+            Malkovitch.sayText(":Yee-Haw!)")
+            Malkovitch.setVelocity(0, -15)
+        }
+    }
+})
+forever(function () {
+    Music()
+})
+forever(function () {
+    if (Timer == 0) {
+        scary_monster.sayText("Time's up, mustache!")
+        pause(500)
+        game.over(false, effects.dissolve)
+    }
+})
+forever(function () {
+    if (Malkovitch.overlapsWith(P2Weapon)) {
+        Malkovitch.setVelocity(0, 0)
+        pause(2000)
+    }
+})
+forever(function () {
+    if (Malkovitch.overlapsWith(scary_monster)) {
+        Malkovitch.setVelocity(randint(-100, 100), randint(-100, 100))
+        Malkovitch.destroy(effects.ashes, 3000)
+        Malkovitch.sayText("@#$%!")
+        Malkovitch.setBounceOnWall(false)
+        pause(1000)
+        game.over(false, effects.slash)
+        if (controller.A.isPressed()) {
+            pause(100)
+        }
+    }
+})
+forever(function () {
+    if (Malkovitch.overlapsWith(yikes)) {
+        Malkovitch.setVelocity(100, 100)
+    }
+})
+forever(function () {
+    if (Malkovitch.overlapsWith(projectyle)) {
+        Malkovitch.setVelocity(randint(-100, 100), -27)
+    }
+})
+forever(function () {
+    if (!(Malkovitch.overlapsWith(scary_monster) || Malkovitch.overlapsWith(COIN3) || (Malkovitch.vx < -31 || Malkovitch.overlapsWith(P2Weapon) || Malkovitch.vx > 31))) {
+        controls()
+    }
+})
+forever(function () {
+	
 })
