@@ -1,6 +1,7 @@
 namespace SpriteKind {
     export const notreallythere = SpriteKind.create()
     export const P2Weapon = SpriteKind.create()
+    export const secretNumvber = SpriteKind.create()
 }
 function noText () {
     textSprite.setText(" ")
@@ -970,8 +971,8 @@ function OverlapCoins (playah: Sprite) {
         playah.setVelocity(0, -21)
         yay()
         scene.cameraShake(4, 500)
-        sprites.destroyAllSpritesOfKind(SpriteKind.Enemy, effects.fire, 750)
-        sprites.destroyAllSpritesOfKind(SpriteKind.Projectile, effects.fire, 500)
+        sprites.destroyAllSpritesOfKind(SpriteKind.Enemy, effects.spray, 750)
+        sprites.destroyAllSpritesOfKind(SpriteKind.Projectile, effects.spray, 500)
         pause(2000)
         game.over(true, effects.confetti)
     }
@@ -980,15 +981,15 @@ function OverlapCoins (playah: Sprite) {
         playah.setVelocity(0, -21)
         yay()
         scene.cameraShake(4, 500)
-        sprites.destroyAllSpritesOfKind(SpriteKind.Enemy, effects.fire, 750)
-        sprites.destroyAllSpritesOfKind(SpriteKind.Projectile, effects.fire, 600)
+        sprites.destroyAllSpritesOfKind(SpriteKind.Enemy, effects.spray, 750)
+        sprites.destroyAllSpritesOfKind(SpriteKind.Projectile, effects.spray, 600)
         pause(2000)
         game.over(true, effects.confetti)
     } else if (playah.overlapsWith(COIN3)) {
         COIN3.destroy()
         scary_monster.follow(playah)
         pause(700)
-        game.over(true, effects.dissolve)
+        game.over(true, effects.confetti)
     }
 }
 function Music () {
@@ -1018,6 +1019,7 @@ function Music () {
     music.playMelody("E G D E - E D G ", 500)
 }
 function gameRestart () {
+    sprites.destroyAllSpritesOfKind(SpriteKind.Food)
     noText()
     scene.setBackgroundImage(img`
         aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
@@ -1151,6 +1153,24 @@ function gameRestart () {
     yikes.setPosition(0, 60)
     projectyle.setPosition(0, 120)
     projectyle.startEffect(effects.fire)
+    coin = sprites.create(img`
+        . . . 5 5 5 5 5 5 5 5 5 5 . . . 
+        . . 5 5 5 5 5 5 5 5 5 5 5 5 . . 
+        . 5 5 5 5 1 5 5 5 5 5 5 5 5 5 . 
+        5 5 5 5 1 1 5 5 5 5 5 5 5 5 5 5 
+        5 5 5 5 1 5 5 5 5 5 5 5 5 5 5 5 
+        5 5 5 5 1 5 5 5 5 5 5 5 5 5 5 5 
+        5 5 5 1 5 5 5 5 5 5 5 5 5 5 5 5 
+        5 5 5 1 5 5 5 5 5 5 5 5 5 5 5 5 
+        5 5 5 1 5 5 5 5 5 5 5 5 5 5 5 5 
+        5 5 5 1 5 5 5 5 5 5 5 5 5 5 5 5 
+        5 5 5 1 1 5 5 5 5 5 5 5 5 5 5 5 
+        5 5 5 1 5 5 5 5 5 5 5 5 5 5 5 5 
+        5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 
+        . 5 5 5 5 5 5 5 5 5 5 5 5 5 5 . 
+        . . 5 5 5 5 5 5 5 5 5 5 5 5 . . 
+        . . . 5 5 5 5 5 5 5 5 5 5 . . . 
+        `, SpriteKind.Food)
     coin.setPosition(randint(0, 160), randint(0, 120))
     coin2 = sprites.create(img`
         . . . . . . . . . . . . . . . . 
@@ -1359,6 +1379,7 @@ function gameStart () {
         aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
         aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
         `)
+    secret_number = 0
     scor = 0
     textSprite = textsprite.create(convertToText(scor))
     textSprite.setPosition(145, 4)
@@ -1595,6 +1616,7 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSp
     changeScore(-1)
 })
 let Malkovitch2: Sprite = null
+let secret_number = 0
 let P2Weapon: Sprite = null
 let timerSprite: TextSprite = null
 let Timer = 0
@@ -1746,7 +1768,7 @@ forever(function () {
     if (Timer == 0) {
         scary_monster.sayText("Time's up, mustache!")
         pause(500)
-        game.over(false, effects.dissolve)
+        game.over(false, effects.confetti)
     }
 })
 forever(function () {
@@ -1786,7 +1808,15 @@ forever(function () {
     }
 })
 forever(function () {
-    if (!(Malkovitch.overlapsWith(scary_monster) || Malkovitch.overlapsWith(COIN3) || (Malkovitch.vx < -31 || Malkovitch.overlapsWith(P2Weapon) || Malkovitch.vx > 31))) {
+    if (!(Malkovitch.overlapsWith(COIN3) || (Malkovitch.vx < -31 || Malkovitch.overlapsWith(P2Weapon) || Malkovitch.vx > 31))) {
+        controls()
+    }
+})
+forever(function () {
+    if (Malkovitch.overlapsWith(scary_monster)) {
+        secret_number = 7
+    }
+    if (7 != secret_number) {
         controls()
     }
 })
